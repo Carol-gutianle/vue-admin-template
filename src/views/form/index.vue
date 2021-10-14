@@ -1,43 +1,17 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="Activity name">
+    <el-form ref="form" :rules="rules" :model="form" label-width="120px">
+      <el-form-item label="Username" prop="username" required>
+        <el-input v-model="form.username" />
+      </el-form-item>
+      <el-form-item label="Name" prop="name" required>
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="Activity zone">
-        <el-select v-model="form.region" placeholder="please select your zone">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
-        </el-select>
+      <el-form-item label="Age" prop="age">
+        <el-input v-model.number="form.age" type="number" />
       </el-form-item>
-      <el-form-item label="Activity time">
-        <el-col :span="11">
-          <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" style="width: 100%;" />
-        </el-col>
-        <el-col :span="2" class="line">-</el-col>
-        <el-col :span="11">
-          <el-time-picker v-model="form.date2" type="fixed-time" placeholder="Pick a time" style="width: 100%;" />
-        </el-col>
-      </el-form-item>
-      <el-form-item label="Instant delivery">
-        <el-switch v-model="form.delivery" />
-      </el-form-item>
-      <el-form-item label="Activity type">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="Online activities" name="type" />
-          <el-checkbox label="Promotion activities" name="type" />
-          <el-checkbox label="Offline activities" name="type" />
-          <el-checkbox label="Simple brand exposure" name="type" />
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="Resources">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="Sponsor" />
-          <el-radio label="Venue" />
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="Activity form">
-        <el-input v-model="form.desc" type="textarea" />
+      <el-form-item label="Telenum" prop="telenum">
+        <el-input v-model="form.telenum" type="text" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">Create</el-button>
@@ -48,28 +22,52 @@
 </template>
 
 <script>
+import { submit } from '@/api/form'
 export default {
   data() {
+    const validateAge = (rule, value, callback) => {
+      if (value < 0 || value > 256) {
+        callback(new Error('请输入正确的年龄！'))
+      } else {
+        if (!Number.isInteger(value)) {
+          callback(new Error('请输入数字！'))
+        }
+        callback()
+      }
+    }
     return {
       form: {
         name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        username: '',
+        age: null,
+        telenum: ''
+      },
+      rules: {
+        username: [{
+          max: 10, message: 'Username至多10个字符!'
+        }],
+        name: [{
+          max: 8, message: 'Name至多8个字符！'
+        }],
+        age: [{
+          validator: validateAge
+        }],
+        telenum: [{
+          min: 11, max: 11, message: '请输入11位号码！'
+        }]
       }
     }
   },
   methods: {
     onSubmit() {
-      this.$message('submit!')
+      submit(this.form).then(response => {
+        console.log(response)
+      })
+      this.$message('提交成功')
     },
     onCancel() {
       this.$message({
-        message: 'cancel!',
+        message: '已取消提交',
         type: 'warning'
       })
     }

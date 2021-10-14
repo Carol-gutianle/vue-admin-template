@@ -44,47 +44,47 @@ export const constantRoutes = [
   },
 
   {
-    path: '/example',
+    path: '/',
     component: Layout,
-    redirect: '/example/table',
-    name: '主控制台',
+    redirect: '/dashboard',
     meta: { title: '主控制台', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: '新增用户', icon: 'table' }
+        path: '/',
+        name: 'AddUser',
+        component: () => import('@/views/form/index'),
+        meta: { title: '新增用户', icon: 'form' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '删除用户', icon: 'tree' }
+        path: '/DeleteUser',
+        name: 'DeleteUser',
+        component: () => import('@/views/deleteform/index'),
+        meta: { title: '删除用户', icon: 'form' }
       }
     ]
   },
 
   {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: '操作记录',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '操作记录', icon: 'dashboard' }
-    }]
-  },
-
-  {
-    path: '/form',
+    path: '/table',
     component: Layout,
     children: [
       {
-        path: 'index',
+        path: '/index',
+        name: '操作记录',
+        component: () => import('@/views/table/index'),
+        meta: { title: '操作记录', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/database',
+    component: Layout,
+    children: [
+      {
+        path: 'details',
         name: '数据库',
-        component: () => import('@/views/form/index'),
+        component: () => import('@/views/datadisplay/index'),
         meta: { title: '数据库', icon: 'form' }
       }
     ]
