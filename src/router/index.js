@@ -46,12 +46,12 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: 'dashboard',
     meta: { title: '主控制台', icon: 'el-icon-s-help' },
     children: [
       {
-        path: '/',
-        name: 'AddUser',
+        path: '/Dashboard',
+        name: 'Dashboard',
         component: () => import('@/views/form/index'),
         meta: { title: '新增用户', icon: 'form' }
       },
