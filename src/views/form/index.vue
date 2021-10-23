@@ -64,6 +64,7 @@ export default {
         console.log(response)
       })
       this.$message('提交成功')
+      this.$router.push('/index')
     },
     onCancel() {
       this.$message({

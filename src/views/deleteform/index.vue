@@ -33,6 +33,7 @@ export default {
         console.log(response)
       })
       this.$message('删除成功')
+      this.$router.push('/index')
     },
     onCancel() {
       this.$message({
