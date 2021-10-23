@@ -36,12 +36,12 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    proxy:{
-      [process.env.VUE_APP_BASE_API]:{
-        target:'http://139.9.154.218:8080',
-        changeOrigin:true,
+    proxy: {
+      [process.env.VUE_APP_BASE_API]: {
+        target: 'http://139.9.154.218:8080',
+        changeOrigin: true,
         pathRewrite:{
-          ['^'+process.env.VUE_APP_BASE_API]:''
+          ['^' + process.env.VUE_APP_BASE_API]: ''
         }
       }
     }
