@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export function login() {
   return request({
     url: '/admin/login',
     method: 'post'
@@ -15,7 +15,7 @@ export function getInfo(token) {
   })
 }
 
-export function logout() {
+export function logout(commit) {
   return request({
     url: '/admin/logout',
     method: 'post'
