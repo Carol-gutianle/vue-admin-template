@@ -22,7 +22,7 @@ export default {
       },
       rules: {
         username: [{
-          max: 10, message: 'Username至多10个字符!'
+          max: 10, message: 'Username至多10个字符!', required: true
         }]
       }
     }

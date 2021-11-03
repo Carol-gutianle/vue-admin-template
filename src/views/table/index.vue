@@ -2,14 +2,19 @@
   <div class="app-container">
     <el-table
       v-loading="listLoading"
-      :data="opData"
+      :data="list"
       element-loading-text="Loading"
       border
       fit
       highlight-current-row
+      @sort-change="+id"
     >
       <template>
-        <el-table-column align="center" label="Record" prop="OpResult" />
+        <el-table-column align="center" label="Record">
+          <template slot-scope="{row}">
+            <span>{{ row.OpResult }}</span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="Actions" width="120">
           <template slot-scope="{row}">
             <el-button
@@ -34,13 +39,22 @@
         </el-table-column>
       </template>
     </el-table>
+    <template>
+      <pagination
+        :total="total"
+        :page.sync="listQuery.page"
+        :limit.sync="listQuery.limit"
+        @pagination="getList"
+      />
+    </template>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
-
+import { getList, deleteRes } from '@/api/table'
+import Pagination from '@/components/Pagination'
 export default {
+  components: { Pagination },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -53,27 +67,45 @@ export default {
   },
   data() {
     return {
-      opData: [],
+      list: null,
       listLoading: true,
-      Record: 'Record'
+      Record: 'Record',
+      total: 0,
+      listQuery: {
+        page: 1,
+        limit: 10,
+        sort: '+id'
+      }
     }
   },
   created() {
-    this.fetchData()
+    this.getList()
   },
   methods: {
-    fetchData() {
+    getList() {
       this.listLoading = true
-      getList().then(response => {
+      getList(this.listQuery).then(response => {
         console.log(response)
-        this.opData = response.data
-        this.listLoading = false
+        this.list = response.data.items
+        this.total = response.data.total
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
       })
+    },
+    handleFilter() {
+      this.listQuery.page = 1
+      this.getList()
     },
     confirmEdit(row) {
       row.edit = false
+      deleteRes({ result: row.OpResult }).then(response => {
+        console.log(row.OpResult)
+        console.log(response)
+        this.getList()
+      })
       this.$message({
-        message: 'The title has been edited',
+        message: 'The Record has been edited',
         type: 'success'
       })
     }

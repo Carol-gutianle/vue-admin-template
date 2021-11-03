@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function getList(query) {
   return request({
     url: '/database/details',
     method: 'get',
